@@ -1,12 +1,26 @@
 import ccxt
 import pandas as pd 
+import asyncio
 
-binance = ccxt.binance()
-binancemarkets = binance.load_markets()
-binance_eth = binance.markets['ETH/USDT']
-print(binance_eth)
+async def ccxt_prices():
+    binance = ccxt.binanceusdm()
+    ftx = ccxt.ftx()
+    while True:
+        binanceticker = binance.fetch_ticker('ETH/USDT')
+        ftxticker = ftx.fetch_ticker('ETH/USD:USD')
 
-ftx = ccxt.ftx()
-ftxmarkets = ftx.load_markets()
+        # print(binanceticker['symbol'])
+        # binancebid = binanceticker['bid']
+        # binanceask = binanceticker['ask']
+        # print(f"{binancebid} / {binanceask}")
 
-#print(ccxt.exchanges)
+        print(ftxticker['symbol'])
+        ftxbid = ftxticker['bid']
+        ftxask = ftxticker['ask']
+        print(f"{ftxbid} / {ftxask}")
+
+        await asyncio.sleep(0.001)
+    
+loop = asyncio.get_event_loop()
+asyncio.ensure_future(ccxt_prices())
+loop.run_forever()
