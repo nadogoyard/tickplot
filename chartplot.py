@@ -42,6 +42,4 @@ def animated_plot(i):
 ani = FuncAnimation(plt.gcf(), animated_plot, interval=1)
 
 plt.show()
-#loop = asyncio.get_event_loop()
-#asyncio.ensure_future(ccxt_prices())
-#loop.run_forever()
+
