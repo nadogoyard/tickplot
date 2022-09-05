@@ -10,15 +10,8 @@ ftxcloses = []
 
 def animated_plot(i):
     
-    binance = ccxt.binanceusdm()
     ftx = ccxt.ftx()
-    
-    #binanceticker = binance.fetch_ticker('ETH/USDT')
     ftxticker = ftx.fetch_ticker('ETH/USD:USD')
-
-    # print(binanceticker['symbol'])
-    # binancebid = binanceticker['bid']
-    # binanceask = binanceticker['ask']
 
     ftxbid = ftxticker['bid']
     ftxask = ftxticker['ask']
@@ -34,6 +27,7 @@ def animated_plot(i):
     plt.plot(ftxbids, drawstyle='steps-pre',label='bid')
     plt.plot(ftxasks, drawstyle='steps-pre',label='ask')
     plt.plot(ftxcloses, drawstyle='steps-pre', label='executed', alpha=0.66)
+    plt.plot(ftxmidprices, drawstyle='steps-pre', label='midprice', alpha=0.33)
     plt.legend(loc="upper left")
     plt.xlabel("ticks")
     plt.ylabel("price")
