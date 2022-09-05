@@ -1,26 +1,47 @@
 import ccxt
-import pandas as pd 
 import asyncio
+import matplotlib.pyplot as plt
+from matplotlib.animation import FuncAnimation
 
-async def ccxt_prices():
+ftxbids = []
+ftxasks = []
+ftxmidprices = []
+ftxcloses = []
+
+def animated_plot(i):
+    
     binance = ccxt.binanceusdm()
     ftx = ccxt.ftx()
-    while True:
-        binanceticker = binance.fetch_ticker('ETH/USDT')
-        ftxticker = ftx.fetch_ticker('ETH/USD:USD')
-
-        # print(binanceticker['symbol'])
-        # binancebid = binanceticker['bid']
-        # binanceask = binanceticker['ask']
-        # print(f"{binancebid} / {binanceask}")
-
-        print(ftxticker['symbol'])
-        ftxbid = ftxticker['bid']
-        ftxask = ftxticker['ask']
-        print(f"{ftxbid} / {ftxask}")
-
-        await asyncio.sleep(0.001)
     
-loop = asyncio.get_event_loop()
-asyncio.ensure_future(ccxt_prices())
-loop.run_forever()
+    #binanceticker = binance.fetch_ticker('ETH/USDT')
+    ftxticker = ftx.fetch_ticker('ETH/USD:USD')
+
+    # print(binanceticker['symbol'])
+    # binancebid = binanceticker['bid']
+    # binanceask = binanceticker['ask']
+
+    ftxbid = ftxticker['bid']
+    ftxask = ftxticker['ask']
+    ftxmidprice = ((ftxask + ftxbid) / 2)
+    ftxclose = ftxticker['close']
+
+    ftxbids.append(ftxbid)
+    ftxasks.append(ftxask)
+    ftxmidprices.append(ftxmidprice)
+    ftxcloses.append(ftxclose)
+
+    plt.cla()
+    plt.plot(ftxbids, drawstyle='steps-pre',label='bid')
+    plt.plot(ftxasks, drawstyle='steps-pre',label='ask')
+    plt.plot(ftxcloses, drawstyle='steps-pre', label='executed', alpha=0.66)
+    plt.legend(loc="upper left")
+    plt.xlabel("ticks")
+    plt.ylabel("price")
+    plt.ticklabel_format(useOffset=False)
+
+ani = FuncAnimation(plt.gcf(), animated_plot, interval=1)
+
+plt.show()
+#loop = asyncio.get_event_loop()
+#asyncio.ensure_future(ccxt_prices())
+#loop.run_forever()
