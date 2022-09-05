@@ -1,2 +1,2 @@
-# chartplot
-Plots price from two exchanges simultaneously, using the CCXT library and my choice of exchanges: FTX and Binance.
+# tickplot
+Plots FTX bids/asks and the executed close price. Utilising the CCXT library and FuncAnimation from matplotlib.animation.
